@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "test": "tsc && jest ./dist",
+    "test": "tsc && jest ./dist --verbose",
     "prepare": "husky install"
   },
   "repository": {
