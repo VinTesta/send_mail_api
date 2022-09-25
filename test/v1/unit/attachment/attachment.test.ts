@@ -9,7 +9,11 @@ describe("Attachment module", () => {
     expect(attachment.name).toBeTruthy();
   })
 
-  test("Should throw ERROR on create a attachment", () => {
+  test("Should throw ERROR on create a attachment with no name", () => {
     expect(() => new Attachment('', AttachmentExtensions.PNG, AttachmentTypes.JPG, 'UklGRk6dAABXRUJQVlA4IEKdAACwmAKdASo')).toThrow("Name cannot be null");
+  })
+
+  test("Should throw ERROR on create a attachment with no content", () => {
+    expect(() => new Attachment('attachment-test', AttachmentExtensions.PNG, AttachmentTypes.JPG, '')).toThrow("Content cannot be null");
   })
 })

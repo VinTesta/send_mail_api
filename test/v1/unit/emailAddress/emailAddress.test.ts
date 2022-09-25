@@ -1,4 +1,4 @@
-import EmailAddress from "../../../../src/v1/business/domain/emailAddress/entity/emailAddress.entity";
+import EmailAddress from "../../../../src/v1/business/domain/email/value-object/emailAddress.value-object";
 
 describe('Mail Address module', () => {
   test('Should CREATE a new Mail Address',  () => {
@@ -14,5 +14,10 @@ describe('Mail Address module', () => {
       let emailAddress: EmailAddress;
       expect(() => emailAddress = new EmailAddress(email)).toThrow();
     })
+  })
+
+  test('Should RETURN the email address', () => {
+    const emailAddress = new EmailAddress("teste@gmail.com");
+    expect(emailAddress.getAddress()).toBe("teste@gmail.com");
   })
 })
