@@ -20,8 +20,8 @@ describe("Send email module test", () => {
   test("Should send a email", async () => {
     const spy = jest.spyOn(mailer, 'send');
     const sendEmailInput: ISendEmailDto = {
-      recipientEmail: new EmailAddress("viniciustestapassos@gmail.com"),
-      senderEmail: new EmailAddress("Equipe Everest <everestmensageiro@gmail.com>"),
+      recipientEmail: new EmailAddress("destinatarioteste@gmail.com"),
+      senderEmail: new EmailAddress("Remetente Teste <remetenteteste@gmail.com>"),
       email: new Email(emailTitle, emailBody),
     }
 

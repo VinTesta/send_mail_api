@@ -9,6 +9,7 @@ export default class SendEmail implements ISendEmail {
   execute(input: sendEmailDtoInterface): Promise<emailOutputInterface> {
     return new Promise<emailOutputInterface>(async (resolve, reject) => {
       const mailSent = await this.mailer.send(input);
+      if(!mailSent) reject("It was not possible to send the email!");
       resolve(mailSent)
     })
   }

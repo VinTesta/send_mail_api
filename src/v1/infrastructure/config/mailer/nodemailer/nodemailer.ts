@@ -2,6 +2,7 @@ import Email from "../../../../business/domain/email/entity/email.entity";
 import MailerAdapter from "../../../adapter/mailer/mailer.adapter";
 import sendEmailDtoInterface from "../../../../business/domain/email/use-case/dto/input/sendEmailDto.interface";
 const nodemailer = require('nodemailer');
+require("dotenv/config");
 
 export default class NodeMailer implements MailerAdapter {
   private transporter: any = nodemailer.createTransport({
@@ -9,8 +10,8 @@ export default class NodeMailer implements MailerAdapter {
     port: 465,
     secure: true,
     auth: {
-      user: 'everestmensageiro@gmail.com',
-      pass: 'afdotzwwljusomhb',
+      user: process.env.USERNAME_SMTP,
+      pass: process.env.PASSWORD_SMTP,
     },
   });
 
