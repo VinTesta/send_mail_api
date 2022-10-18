@@ -1,0 +1,1 @@
+export const SendEmailUseCaseToken: unique symbol = Symbol('SendEmail');

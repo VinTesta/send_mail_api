@@ -1,22 +1,14 @@
 import Attachment from "../../attachment/entity/attachment.entity";
 
 export default class Email {
-  private attachmentList: Attachment[] = [];
-  constructor(private readonly title?: string, private readonly body?: string) { }
+  attachmentList: Array<Attachment> = [];
+  constructor(readonly _title: string, readonly _body: string) { }
 
-  addAttachment(attachment: Attachment) {
-    this.attachmentList.push(attachment);
-  }
+  public get title():string { return this._title; }
 
-  getAttachmentTotal(): number {
-    return this.attachmentList.length;
-  }
+  public get body():string { return this._body; }
 
-  getBody():string {
-    return this.body || '';
-  }
+  public addAttachment(attachment: Attachment): void { this.attachmentList.push(attachment); }
 
-  getTitle():string {
-    return this.title || '';
-  }
+  public getAttachmentTotal(): number { return this.attachmentList.length; }
 }

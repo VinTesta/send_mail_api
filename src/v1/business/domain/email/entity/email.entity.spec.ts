@@ -1,43 +1,28 @@
-import { AttachmentExtensions, AttachmentTypes } from "../../../common/type/common.types";
+import { Extension } from "../../../common/type/extension.type";
 import Attachment from "../../attachment/entity/attachment.entity";
 import Email from "./email.entity";
 
-describe("Email test module", () => {
+describe("Test email entity", () => {
+  let title: string;
+  let body: string;
+  let defaultEmailTemplate: Email;
 
-  describe("Create and add email parts", () => {
-    let emailTitle:string = "Receita de bolo da vovó";
-    let emailBody:string = "- 2 ovos apenas, chamado também de omelete!";
+  beforeEach(() => {
+    title = "This is my title e-mail";
+    body = "This is my body e-mail"
+    defaultEmailTemplate = new Email(title, body);
+  });
 
-    test("Should CREATE a new email", () => {
-      const email = new Email(emailTitle, emailBody);
-      expect(email).toBeDefined();
-      expect(email).toBeTruthy();
-    })
+  it("Should BE DEFINE a valid email", () => {    
+    expect(defaultEmailTemplate.title).toBe(title);
+    expect(defaultEmailTemplate.body).toBe(body);
+    expect(defaultEmailTemplate).toBeInstanceOf(Email);
+    expect(defaultEmailTemplate).toBeTruthy();
+  })
 
-    test("Should CREATE a new email with no body or title", () => {
-      const email = new Email();
-      expect(email).toBeDefined();
-      expect(email).toBeTruthy();
-    })
-  
-    test("Should ADD a new email attachment in email", () => {
-      const email = new Email(emailTitle, emailBody);
-      email.addAttachment(new Attachment("receita_bolo", AttachmentExtensions.JPG, AttachmentTypes.JPG, "esseeocorpodareceitadebolodavovo"));
-      email.addAttachment(new Attachment("foto_da_vovo", AttachmentExtensions.JPEG, AttachmentTypes.JPEG, "fotodavovo"));
-
-      expect(email.getAttachmentTotal()).toBe(2);
-    })
-
-    test('Should return the email body and title', () => {
-      const email = new Email(emailTitle, emailBody);
-      expect(email.getTitle()).toBe(emailTitle);
-      expect(email.getBody()).toBe(emailBody);
-    })
-  
-    test('Should return the empty email body and title', () => {
-      const email = new Email();
-      expect(email.getTitle()).toBe('');
-      expect(email.getBody()).toBe('');
-    })
+  it("Should BE ADD attachment", () => {
+    defaultEmailTemplate.addAttachment(new Attachment("attachment_name", Extension.JPG, "as0moamISJSAa23"));
+    defaultEmailTemplate.addAttachment(new Attachment("second_attachment", Extension.JPEG, "mISJSAa23"));
+    expect(defaultEmailTemplate.getAttachmentTotal()).toBe(2);
   })
 })

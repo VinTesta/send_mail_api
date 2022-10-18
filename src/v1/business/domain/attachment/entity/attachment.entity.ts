@@ -1,8 +1,5 @@
-import { AttachmentExtensions, AttachmentTypes } from "../../../common/type/common.types";
+import { Extension } from "../../../common/type/extension.type";
 
 export default class Attachment {
-  constructor(readonly name: String, readonly extension: AttachmentExtensions, readonly type: AttachmentTypes, readonly content: String) {
-    if(!name) throw new Error("Name cannot be null");
-    if(!content) throw new Error("Content cannot be null");
-  }
+  constructor(readonly _name: string, readonly _extension: Extension, readonly _content: string) {}
 }

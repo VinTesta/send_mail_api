@@ -1,36 +1,60 @@
-import ISendEmailDto from "../../../../../src/v1/business/domain/email/use-case/dto/input/send-email-dto.interface";
-import EmailAddress from "../../../../../src/v1/business/domain/email/value-object/email-address.value-object";
-import Email from "../../../../../src/v1/business/domain/email/entity/email.entity";
-import SendEmail from "../../../../../src/v1/business/service/email/use-case/sendEmail.use-case"
-import MailerAdapter from "../../../../../src/v1/infrastructure/adapter/mailer/mailer.adapter"
-import InMemoryMailer from "../../../../../src/v1/infrastructure/config/mailer/in-memory/in-memory-mailer";
-import NodeMailer from "../../../../../src/v1/infrastructure/config/mailer/nodemailer/nodemailer";
-
-describe("Send email module test", () => {
-  let mailer: MailerAdapter;
-  let emailTitle:string = "E-mail de teste";
-  let emailBody:string = "Estamos enviando esse e-mail para testarmos o nosso servi�o!";
+import MailerAdapter from "../../../../../src/v1/infrastructure/adapter/mailer-adapter.interface";
+import Nodemailer from "../../../../../src/v1/infrastructure/config/mailer/nodemailer";
+import ISendEmailDto from "../../../../../src/v1/business/domain/email/use-case/dto/input/sendEmail-dto.interface";
+import ISendEmailUseCase from "../../../../../src/v1/business/domain/email/use-case/sendEmail-use-case.interface";
+import SendEmailUseCase from "../../../../../src/v1/business/service/email/use-case/sendEmail.use-case";
+import { HttpException } from "@nestjs/common";
+describe("Test send email use case", () => {
+  let senderModule: MailerAdapter;
+  let sendEmailUseCase: ISendEmailUseCase;
+  let successResponse = {
+    messageId: "<okas9di091amNDIa>",
+    status: "Accepted",
+    error: ""
+  };
+  let errorResponse = {
+    messageId: "",
+    status: "Rejected",
+    error: "Message not sended!"
+  };
 
   beforeEach(() => {
-    mailer = new InMemoryMailer();
+    senderModule = new Nodemailer();
+    sendEmailUseCase = new SendEmailUseCase(senderModule);
+  });
+  
+  it("Should SEND EMAIL", async () => {
+    senderModule.send = jest.fn().mockResolvedValue(successResponse);
+
+    const sendEmailInput: ISendEmailDto = {
+      senderEmailAddress: "Contato Everest <everestmensageiro@gmail.com",
+      recipientEmailAddress: "viniciustestapassos@gmail.com",
+      title: "Novo Ticket Aberto",
+      body: "Olá cliente!<br><br> Um novo ticket foi aberto para o seu pedido <b>1027873<b>",
+      attachment: [],
+      copyEmailAddress: []
+    }
+    const responseSendEmail = await sendEmailUseCase.execute(sendEmailInput);
+    expect(responseSendEmail).toBeTruthy();
+    expect(responseSendEmail).toBe(successResponse);
   })
 
-  test("Should send a email", async () => {
-    const sendEmail = new SendEmail(mailer);
-    const spy = jest.spyOn(mailer, 'send');
+  it("Should NOT SEND EMAIL", async () => {
+    senderModule.send = jest.fn().mockResolvedValue(errorResponse);
+
     const sendEmailInput: ISendEmailDto = {
-      recipientEmail: new EmailAddress("vinicius.passos@kabum.com.br"),
-      senderEmail: new EmailAddress("Remetente Teste <remetenteteste@gmail.com>"),
-      email: new Email(emailTitle, emailBody),
+      senderEmailAddress: "Contato Everest <everestmensageiro@gmail.com",
+      recipientEmailAddress: "viniciustestapassos@gmail.com",
+      title: "",
+      body: "",
+      attachment: [],
+      copyEmailAddress: []
     }
 
-    return await sendEmail.execute(sendEmailInput).then((mailSent) => {
-      expect(mailSent).toBeTruthy();
-      expect(spy).toHaveBeenCalled();
-    });
+    try {
+      const responseSendEmail = await sendEmailUseCase.execute(sendEmailInput);
+    } catch(e) {
+      expect(e).toBeInstanceOf(HttpException);
+    }
   })
-
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
 })
