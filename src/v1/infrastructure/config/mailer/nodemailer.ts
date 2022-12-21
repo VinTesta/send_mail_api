@@ -22,10 +22,13 @@ export default class Nodemailer implements MailerAdapter {
       from: emailInformation.senderEmailAddress,
       to: emailInformation.recipientEmailAddress,
       subject: emailInformation.title,
+      attachments: emailInformation.attachment.map(attach => 
+        { return { filename: attach._name, content: attach._content, encoding: attach.encoding }}),
+      cc: emailInformation.copyEmailAddress,
       text: emailInformation.body,
       html: emailInformation.body
     });
-
+    
     return {
       messageId: mailSent.messageId,
       status: mailSent.accepted ? "Accepted" : "Rejected",

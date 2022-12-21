@@ -6,6 +6,6 @@ export default interface ISendEmailDto {
   recipientEmailAddress: string;
   title: string;
   body: string;
-  attachment: { _name :string, _extension: Extension, _content: string }[];
+  attachment: { _name :string, _extension: Extension, _content: string, encoding?: string }[];
   copyEmailAddress: Array<string>;
 }

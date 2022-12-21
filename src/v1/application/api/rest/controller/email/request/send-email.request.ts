@@ -17,14 +17,14 @@ export default class SendEmailRequest implements ISendEmailDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  title: string;
+  title: string; 
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   body: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: [{_name: "cake_secret.txt", _extension: "txt", _content: "ianmsdoMKAMSJNMAIOSDOAiJAI91293"}]})
   attachment: { _name: string; _extension: Extension; _content: string; }[];
 
   @ApiProperty()
