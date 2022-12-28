@@ -4,6 +4,7 @@ import SendEmailUseCase from '../../business/service/email/use-case/sendEmail.us
 import Nodemailer from '../../infrastructure/config/mailer/nodemailer';
 import { EmailController } from '../api/rest/controller/email/email.controller';
 import { SendEmailUseCaseToken } from './token/email.tokens';
+require('dotenv').config();
 
 @Module({
   providers: [
@@ -22,17 +23,17 @@ import { SendEmailUseCaseToken } from './token/email.tokens';
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'kafka-mailer',
-            brokers: ['electric-frog-7930-us1-kafka.upstash.io:9092'],
+            clientId: process.env.KAFKA_SENDMAIL_CLIENT_ID,
+            brokers: [process.env.KAFKA_SENDMAIL_URL],
             sasl: {
               mechanism: 'scram-sha-256',
-              username: 'ZWxlY3RyaWMtZnJvZy03OTMwJHiLRctIaTP1gkcTFDAgpRj9qXa8Tg6BwDMPUKU',
-              password: 'Gw60ngamJdFF1rPBVPP9AQOXJLYOTq-3BpFla1RB1pIIeJ-n-jM8AASjdhDvyVlcOd13yQ==',
+              username: process.env.KAFKA_SENDMAIL_USERNAME,
+              password: process.env.KAFKA_SENDMAIL_PASSWORD,
             },
             ssl: true,
           },
           consumer: {
-            groupId: 'mailer-consumer'
+            groupId: process.env.KAFKA_SENDMAIL_GROUP_ID
           }
         }
       }

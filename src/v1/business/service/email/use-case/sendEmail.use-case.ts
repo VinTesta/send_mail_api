@@ -18,7 +18,9 @@ export default class SendEmailUseCase implements ISendEmailUseCase {
       emailContent.addAttachment(new Attachment(attach._name, attach._extension, attach._content, attach.encoding));
     }
 
-    const copyEmailAddress: Array<EmailAddress> = input.copyEmailAddress.map(emailString => new EmailAddress(emailString));
+    const copyEmailAddress: Array<EmailAddress> = input.copyEmailAddress 
+      ? input.copyEmailAddress.map(emailString => new EmailAddress(emailString))
+      : [];
 
     const sendInput: sendEmailDtoInterface = {
       senderEmailAddress: from.value,
